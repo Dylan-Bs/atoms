@@ -1,6 +1,7 @@
 const {Router} = require('express');
 const {authenticated, hasRole} = require('../authentication');
 const {getAllBlocks, getBlock, findByNameAndLocation, createBlock, saveBlock, deleteBlock} = require('.');
+const {findByBlockId, createResult, saveResult} = require('../result');
 
 const router = Router();
 
@@ -47,6 +48,23 @@ router.delete('/:id', hasRole('ADMIN'), (req, res) => {
   const {id} = req.params;
   deleteBlock(id);
   res.end();
+});
+
+router.get('/:blockId/result', authenticated, (req, res) => res.json(findByBlockId(req.params.blockId)));
+
+router.post('/:blockId/result', hasRole('ADMIN'), (req, res) => {
+  const {blockId} = req.params;
+  const block = getBlock(blockId);
+  if (!block) {
+    return res.status(404).json({error: 'Unknown block'});
+  }
+  const {status, date} = req.body;
+  if (!status || !date) {
+    return res.status(400).json({error: 'Missing status, or date'});
+  }
+  saveResult(createResult(blockId, status, date))
+    .then(() => saveBlock({...block, status}))
+    .then(result => res.json(result.id));
 });
 
 module.exports = router;

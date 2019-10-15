@@ -8,8 +8,6 @@ db.get('blocks')
   .then(result => blocks = JSON.parse(result))
   .catch(() => blocks = {});
 
-const STATUSES = ['NOT_TESTED', 'PASS', 'BATTERY_ISSUE', 'LIGHT_ISSUE'];
-
 const createBlock = (name, location) => ({
   id: uuid(),
   name,
