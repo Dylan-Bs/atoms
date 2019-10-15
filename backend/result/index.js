@@ -19,7 +19,7 @@ const getResult = id => results[id];
 
 const saveResult = result => {
   results[result.id] = result;
-  return db.put('results', results)
+  return db.put('results', JSON.stringify(results))
     .then(() => result);
 };
 
