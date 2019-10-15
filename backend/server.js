@@ -6,6 +6,7 @@ const userRouter = require('./user/router');
 const authenticationRouter = require('./authentication/router');
 const blockRouter = require('./block/router');
 const resultRouter = require('./result/router');
+const sseRouter = require('./sse/router');
 require('dotenv').config();
 
 const app = express();
@@ -24,6 +25,7 @@ app.use('/', authenticationRouter);
 app.use('/user', userRouter);
 app.use('/block', blockRouter);
 app.use('/result', resultRouter);
+app.use('/stream', sseRouter);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => console.log(`Server started and listening on port ${port}`));
