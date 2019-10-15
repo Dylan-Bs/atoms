@@ -1,5 +1,5 @@
 const express = require('express');
-const path = require('path');
+const cors = require('cors');
 const logger = require('morgan');
 const session = require('express-session');
 const userRouter = require('./user/router');
@@ -10,6 +10,7 @@ require('dotenv').config();
 
 const app = express();
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(session({
