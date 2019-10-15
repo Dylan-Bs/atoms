@@ -1,6 +1,6 @@
-const {sortWith, ascend, descend, prop} = require('ramda');
 const {v4: uuid} = require('uuid');
 const db = require('../db');
+const {sort} = require('../utils');
 
 let blocks = {};
 
@@ -14,14 +14,6 @@ const createBlock = (name, location) => ({
   location,
   status: 'NOT_TESTED',
 });
-
-const fieldToComparator = field => {
-  const match = field.match(/([-+])?(\w+)/);
-  const fieldName = match[2];
-  return match[1] === '-' ? descend(prop(fieldName)) : ascend(prop(fieldName));
-};
-
-const sort = (blocks, fields) => sortWith(fields.map(fieldToComparator), blocks);
 
 const getAllBlocks = (fields = []) => sort(Object.values(blocks), fields);
 

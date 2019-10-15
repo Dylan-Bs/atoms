@@ -6,7 +6,11 @@ const getRole = role => ROLES.includes(role) && role;
 
 const router = Router();
 
-router.get('/', authenticated, (req, res) => res.json(getAllUsers()));
+router.get('/', authenticated, (req, res) => {
+  const {sortBy} = req.query;
+  const fields = sortBy && sortBy.split(',') || undefined;
+  return res.json(getAllUsers(fields));
+});
 
 router.get('/:id', authenticated, (req, res) => {
   const {id} = req.params;

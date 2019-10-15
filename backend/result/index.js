@@ -1,5 +1,6 @@
 const {v4: uuid} = require('uuid');
 const db = require('../db');
+const {sort} = require('../utils');
 
 const STATUSES = ['NOT_TESTED', 'PASS', 'BATTERY_ISSUE', 'LIGHT_ISSUE'];
 
@@ -13,7 +14,7 @@ const getStatus = status => STATUSES.includes(status) && status || 'NOT_TESTED';
 
 const createResult = (blockId, status, date) => ({id: uuid(), blockId, status: getStatus(status), date});
 
-const getAllResults = () => Object.values(results);
+const getAllResults = (fields = ['-date']) => sort(Object.values(results), fields);
 
 const getResult = id => results[id];
 

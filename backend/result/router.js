@@ -4,7 +4,11 @@ const {getAllResults, getResult, deleteResult} = require('.');
 
 const router = Router();
 
-router.get('/', authenticated, (req, res) => res.json(getAllResults()));
+router.get('/', authenticated, (req, res) => {
+  const {sortBy} = req.query;
+  const fields = sortBy && sortBy.split(',') || undefined;
+  return res.json(getAllResults(fields));
+});
 
 router.get('/:id', authenticated, (req, res) => {
   const {id} = req.params;

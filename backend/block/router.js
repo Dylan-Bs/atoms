@@ -5,7 +5,11 @@ const {findByBlockId, createResult, saveResult} = require('../result');
 
 const router = Router();
 
-router.get('/', authenticated, (req, res) => res.json(getAllBlocks()));
+router.get('/', authenticated, (req, res) => {
+  const {sortBy} = req.query;
+  const fields = sortBy && sortBy.split(',') || undefined;
+  return res.json(getAllBlocks(fields));
+});
 
 router.get('/:id', authenticated, (req, res) => {
   const {id} = req.params;
@@ -62,9 +66,10 @@ router.post('/:blockId/result', hasRole('ADMIN'), (req, res) => {
   if (!status || !date) {
     return res.status(400).json({error: 'Missing status, or date'});
   }
-  saveResult(createResult(blockId, status, date))
+  const result = createResult(blockId, status, date);
+  saveResult(result)
     .then(() => saveBlock({...block, status}))
-    .then(result => res.json(result.id));
+    .then(() => res.json(result.id));
 });
 
 module.exports = router;
