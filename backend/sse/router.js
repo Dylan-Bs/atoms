@@ -4,7 +4,7 @@ const {register, unregister, notify} = require('.');
 
 const router = Router();
 
-router.get('/', (req, res) => {
+router.get('/', authenticated, (req, res) => {
   res.writeHead(200, {
     'Content-Type': 'text/event-stream',
     'Cache-Control': 'no-cache',
