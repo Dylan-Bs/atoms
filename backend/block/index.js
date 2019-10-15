@@ -2,6 +2,8 @@ const {v4: uuid} = require('uuid');
 const db = require('../db');
 const {sort} = require('../utils');
 
+const STATUSES = ['NOT_TESTED', 'TESTING', 'PASS', 'BATTERY_ISSUE', 'LIGHT_ISSUE'];
+
 let blocks = {};
 
 db.get('blocks')
@@ -33,4 +35,30 @@ const deleteBlock = id => {
 const findByNameAndLocation = (name, location) => Object.values(blocks)
   .find(b => b.name === name && b.location === location);
 
-module.exports = {createBlock, getAllBlocks, getBlock, saveBlock, deleteBlock, findByNameAndLocation};
+const startTest = block => {
+  if (block.status === 'TESTING') {
+    return Promise.resolve(block);
+  }
+  setTimeout(() => {
+    if (Math.random() < 0.8) {
+      return saveBlock({...block, status: 'PASS'})
+    }
+    saveBlock({...block, status: Math.random() < 0.5 ? 'BATTERY_ISSUE' : 'LIGHT_ISSUE'});
+  }, 60000);
+  return saveBlock({...block, status: 'TESTING'});
+};
+
+const report = (block, status) => {
+  return saveBlock({...block, status: STATUSES.includes(status) && status || 'BATTERY_ISSUE'});
+};
+
+module.exports = {
+  createBlock,
+  getAllBlocks,
+  getBlock,
+  saveBlock,
+  deleteBlock,
+  findByNameAndLocation,
+  startTest,
+  report,
+};
