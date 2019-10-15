@@ -1,8 +1,8 @@
 const stream = new EventSource('http://localhost:8080/stream');
 
-stream.onmessage = message => {
-  const data = JSON.parse(message.data);
-  listeners.forEach(listener => listener(data));
+stream.onmessage = ({data, lastEventId}) => {
+  const message = JSON.parse(data);
+  listeners.forEach(listener => listener({message, id: lastEventId}));
 };
 
 let listeners = [];
