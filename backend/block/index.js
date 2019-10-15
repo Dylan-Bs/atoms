@@ -33,7 +33,10 @@ const saveBlock = block => {
     .then(() => block);
 };
 
-const deleteBlock = id => delete blocks[id];
+const deleteBlock = id => {
+  delete blocks[id];
+  return db.put('blocks', JSON.stringify(blocks));
+};
 
 const findByNameAndLocation = (name, location) => Object.values(blocks)
   .find(b => b.name === name && b.location === location);

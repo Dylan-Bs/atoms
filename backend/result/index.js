@@ -23,7 +23,10 @@ const saveResult = result => {
     .then(() => result);
 };
 
-const deleteResult = id => delete results[id];
+const deleteResult = id => {
+  delete results[id];
+  return db.put('results', JSON.stringify(results))
+};
 
 const findByBlockId = blockId => Object.values(results).filter(r => r.blockId === blockId);
 

@@ -38,6 +38,9 @@ const saveUser = user => {
     .then(() => user);
 };
 
-const deleteUser = id => delete users[id];
+const deleteUser = id => {
+  delete users[id];
+  return db.put('users', JSON.stringify(users));
+};
 
 module.exports = {ROLES, getAllUsers, findByName, createUser, getUser, saveUser, deleteUser, hashPassword, verify};

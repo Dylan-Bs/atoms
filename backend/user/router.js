@@ -55,8 +55,8 @@ router.put('/:id', hasRole('ADMIN'), (req, res) => {
 
 router.delete('/:id', hasRole('ADMIN'), (req, res) => {
   const {id} = req.params;
-  deleteUser(id);
-  res.end();
+  deleteUser(id)
+    .then(() => res.end());
 });
 
 module.exports = router;

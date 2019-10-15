@@ -46,8 +46,8 @@ router.put('/:id', hasRole('ADMIN'), (req, res) => {
 
 router.delete('/:id', hasRole('ADMIN'), (req, res) => {
   const {id} = req.params;
-  deleteBlock(id);
-  res.end();
+  deleteBlock(id)
+    .then(() => res.end());
 });
 
 router.get('/:blockId/result', authenticated, (req, res) => res.json(findByBlockId(req.params.blockId)));

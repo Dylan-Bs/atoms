@@ -17,8 +17,8 @@ router.get('/:id', authenticated, (req, res) => {
 
 router.delete('/:id', hasRole('ADMIN'), (req, res) => {
   const {id} = req.params;
-  deleteResult(id);
-  res.end();
+  deleteResult(id)
+    .then(() => res.end());
 });
 
 
