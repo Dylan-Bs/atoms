@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Icon, Layout} from 'antd';
+import {Icon, Layout, Button, message} from 'antd';
 import api from './api';
 import LoginForm from './LoginForm';
 
@@ -21,6 +21,12 @@ class App extends Component {
       .catch(() => this.setState({loggedIn: false}));
   };
 
+  logout = () => {
+    api.post('/logout')
+        .then(this.checkConnection)
+        .catch(() => message.error("Wrong credentials"))
+  };
+
   render() {
     const {name, loggedIn} = this.state;
     return (
@@ -32,6 +38,7 @@ class App extends Component {
           </h1>
           <div style={{float: 'right', color: 'white'}}>
             {(loggedIn && name) || 'not connected'}
+            {loggedIn && <Button type="danger" onClick={this.logout} style={{marginLeft:"10px"}}>Log Out</Button>}
           </div>
         </Header>
         <Content style={{background: '#fff', padding: 24, minHeight: 280}}>
