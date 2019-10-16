@@ -24,7 +24,7 @@ class App extends Component {
   logout = () => {
     api.post('/logout')
         .then(this.checkConnection)
-        .catch(() => message.error("Wrong credentials"))
+        .catch(() => message.error("Problems on disconnect"))
   };
 
   render() {
