@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({origin: (origin, callback) => callback(null, true), credentials: true}));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(session({
